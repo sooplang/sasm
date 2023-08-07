@@ -1,38 +1,52 @@
 @event_whenflagclicked
-motion_movesteps steps(1: 4, 10)
-motion_turnright degees(1: 8, 10)
+motion_movesteps STEPS(1: 4, 10)
+motion_turnright DEGEES(1: 8, 10)
 
-$goto motion_goto_menu to[_random_]
-motion_goto to(1: $goto) 
+$goto motion_goto_menu TO[_random_]
+motion_goto TO(1: $goto) 
 
-motion_gotoxy x(1: 4, 0) y(1: 4, 0)
+motion_gotoxy X(1: 4, 0) Y(1: 4, 0)
 
-$glideto motion_glideto_menu to[_random_]
-motion_glideto secs(1: 4, 1) to(1: $glideto)
+$glideto motion_glideto_menu TO[_random_]
+motion_glideto SECS(1: 4, 1) TO(1: $glideto)
 
 control_forever {
-    $keyoptions1 sensing_keyoptions key_option['space']
-    $keypressed1 sensing_keypressed key_option(1: $keyoptions)
-    control_if condition(2: $keypressed1) {
-        $operatoradd1 operator_add num1(3: var c; 4, 0) num2(1: 4, -4)
-        motion_turnright degees(3: $operatoradd1)
-        $operatoradd2 operator_add num1(3: var d; 4, 0) num2(1: 4, 2)
-        motion_movesteps steps(3: $operatoradd2)
+    $keyoptions1 sensing_keyoptions KEY_OPTION['space']
+    $keypressed1 sensing_keypressed KEY_OPTION(1: $keyoptions)
+    control_if CONDITION(2: $keypressed1) {
+        $operatoradd1 operator_add NUM1(3: var c; 4, 0) NUM2(1: 4, -4)
+        motion_turnright DEGEES(3: $operatoradd1)
+        $operatoradd2 operator_add NUM1(3: var d; 4, 0) NUM2(1: 4, 2)
+        motion_movesteps STEPS(3: $operatoradd2)
         looks_nextcostume
     }
-    $keyoptions2 sensing_keyoptions key_option['a']
-    $keypressed2 sensing_keypressed key_option(1: $keyoptions)
-    control_if condition(2: $keypressed2) {
-        event_broadcast broadcast_input(11: broadcast message1)
+    $keyoptions2 sensing_keyoptions KEY_OPTION['a']
+    $keypressed2 sensing_keypressed KEY_OPTION(1: $keyoptions)
+    control_if CONDITION(2: $keypressed2) {
+        event_broadcast BROADCAST_INPUT(1: broadcast 'semβολ içerebilen broadcast')
+        event_broadcast BROADCAST_INPUT(3: var 'broadcast adı', broadcast mesaj2)
     }
 
-    $soundmenu sound_sounds_menu sound_menu['meow', null]
-    sound_playuntildone sound_menu(1: $soundmenu)
+    $soundmenu sound_sounds_menu SOUND_MENU['Meow', null]
+    sound_playuntildone SOUND_MENU(1: $soundmenu)
 }
 
 
+@event_whenbroadcastreceived BROADCAST_OPTION[broadcast message1]
+looks_sayforsecs MESSAGE(1: 10, 'a\'ya basıldı') SECS(1: 4, 1)
+control_wait DURATION(1: 5, 1)
+looks_sayforsecs MESSAGE(1: list 'Türkçe karakter ve sēmβol içeren liste adı') SECS(1: 4, 1)
 
-@event_whenbroadcastreceived broadcast_option[broadcast message1]
-looks_sayforsecs message(1: 10, 'a\'ya basıldı') secs(1: 4, 1)
-control_wait duration(1: 5, 1)
-looks_sayforsecs message(1: list a) secs(1: 4, 1)
+
+$prototype procedures_prototype 'string: %s boolean: %b başka string: %s escaped: \%s' #input1 #input2 #'input 3'
+@procedures_definition custom_block(1: $prototype)
+control_if CONDITION(2: #input2) {
+    looks_say MESSAGE(3: #input1; 10, 'Hello!')
+    control_wait DURATION(1: 5, 1)
+    looks_say MESSAGE(3: #'input 3'; 10, 'Sembol içerebilen input')
+}
+
+
+@event_whengreaterthan VALUE(1: 4, 10) WHENGREATHERTHANMENU['TIMER']
+$equals operator_equals OPERAND1(1: 10, '50') OPERAND2(3: var a)
+procedures_call $prototype input1(1: 10, 'test') input2(2: $equals) 'input 3'(1: null) 
