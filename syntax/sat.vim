@@ -34,15 +34,15 @@ syn match satBlockUnknown /@\?unknown_\w*/ contained nextgroup=satFieldName, sat
 syn match satBlockPrototype /@\?procedures_prototype/ contained nextgroup=satPrototypeProccode
 syn match satBlockCall /@\?procedures_call/ contained nextgroup=satBlockCallIdentifier
 
-syn match satInputName "\v\s+(\w+|'.{-1,}\\@<!'|\".{-1,}\\@<!\")\(@=" contained nextgroup=satInputType, satInput
+syn match satInputName "\v\s+(\w+|'([^']|\\')*'|\"([^\"]|\\\")*\")\(@=" contained nextgroup=satInputType, satInput
 syn region satInput start="(" end=")" contained contains=satInputName, satInputType, satNumber, satString, satNull, satInputBlockIdentifier, satKeyword, satVariable, satInputInputIdentifier nextgroup=satInputName, satFieldName
 syn match satInputType "(\@<=\d\{-1,}:" contained
 
-syn match satFieldName "\v\s+(\w+|'.{-1,}\\@<!'|\".{-1,}\\@<!\")\[@=" contained nextgroup=satField
+syn match satFieldName "\v\s+(\w+|'([^']|\\')*'|\"([^\"]|\\\")*\")\[@=" contained nextgroup=satField
 syn region satField start="\[" end="\]" contained contains=satString, satFieldReserved, satNull, satKeyword, satvariable nextgroup=satInputName, satFieldName
 
  
-syn match satPrototypeProccode "\v('.{-1,}\\@<!'|\".{-1,}\\@<!\")" contained contains=satPrototypeProccodeInput nextgroup=satPrototypeInput
+syn match satPrototypeProccode "\v\s+('.{-1,}\\@<!'|\".{-1,}\\@<!\")" contained contains=satPrototypeProccodeInput nextgroup=satPrototypeInput
 syn match satPrototypeProccodeInput "\\\@<!%\(s\|b\)" contained 
 syn match satPrototypeInput "\v\s*\#(\w+|'.{-1,}\\@<!'|\".{-1,}\\@<!\")" contained nextgroup=satPrototypeInput
 syn match satBlockCallIdentifier "\s\+\$\w\+" contained nextgroup=satInputName, satFieldName
