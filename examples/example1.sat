@@ -1,0 +1,38 @@
+@event_whenflagclicked
+motion_movesteps steps(1: 4, 10)
+motion_turnright degees(1: 8, 10)
+
+$goto motion_goto_menu to[_random_]
+motion_goto to(1: $goto) 
+
+motion_gotoxy x(1: 4, 0) y(1: 4, 0)
+
+$glideto motion_glideto_menu to[_random_]
+motion_glideto secs(1: 4, 1) to(1: $glideto)
+
+control_forever {
+    $keyoptions1 sensing_keyoptions key_option['space']
+    $keypressed1 sensing_keypressed key_option(1: $keyoptions)
+    control_if condition(2: $keypressed1) {
+        $operatoradd1 operator_add num1(3: var c; 4, 0) num2(1: 4, -4)
+        motion_turnright degees(3: $operatoradd1)
+        $operatoradd2 operator_add num1(3: var d; 4, 0) num2(1: 4, 2)
+        motion_movesteps steps(3: $operatoradd2)
+        looks_nextcostume
+    }
+    $keyoptions2 sensing_keyoptions key_option['a']
+    $keypressed2 sensing_keypressed key_option(1: $keyoptions)
+    control_if condition(2: $keypressed2) {
+        event_broadcast broadcast_input(11: broadcast message1)
+    }
+
+    $soundmenu sound_sounds_menu sound_menu['meow', null]
+    sound_playuntildone sound_menu(1: $soundmenu)
+}
+
+
+
+@event_whenbroadcastreceived broadcast_option[broadcast message1]
+looks_sayforsecs message(1: 10, 'a\'ya basıldı') secs(1: 4, 1)
+control_wait duration(1: 5, 1)
+looks_sayforsecs message(1: list a) secs(1: 4, 1)
